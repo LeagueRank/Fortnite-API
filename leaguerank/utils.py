@@ -2,6 +2,9 @@ import json
 from urllib import urlencode
 import urllib2
 from datetime import datetime
+import sys
+
+from settings import DEBUG
 
 
 def getJSON(url, headers={}, params={}):
@@ -19,10 +22,11 @@ def getJSON(url, headers={}, params={}):
         response = urllib2.urlopen(request)
         return json.load(response)
     except urllib2.HTTPError, e:
-        print url
-        print params
-        print headers
-        print e.read()
+        if DEBUG:
+            print >> sys.stderr, url
+            print >> sys.stderr, params
+            print >> sys.stderr, headers
+            print >> sys.stderr, e.read()
         raise e
 
 
@@ -34,10 +38,11 @@ def postJSON(url, headers={}, data={}):
         response = urllib2.urlopen(request)
         return json.load(response)
     except urllib2.HTTPError, e:
-        print url
-        print data
-        print headers
-        print e.read()
+        if DEBUG:
+            print >> sys.stderr, url
+            print >> sys.stderr, data
+            print >> sys.stderr, headers
+            print >> sys.stderr, e.read()
         raise e
 
 

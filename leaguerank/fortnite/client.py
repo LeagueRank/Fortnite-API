@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from urllib import urlencode
+from urllib2 import HTTPError
 
 from leaguerank import settings
 from leaguerank.settings import Platform, GameType
@@ -7,6 +7,7 @@ from leaguerank.utils import getJSON, postJSON, convert_iso_time
 
 from . import Player, BattleRoyale, BattleRoyaleStats, \
               Store, StoreFront, Leaderboard, News, PatchNotes
+from .errors import UsernameNotFound
 
 
 class FortniteClient(object):
@@ -57,13 +58,19 @@ class FortniteClient(object):
 
     def player(self, username):
         """Return object containing player name and id"""
-        response = self.session.get(
-            settings.player,
-            params={
-                'q': username
-            }
-        )
-        return Player(response)
+        try:
+            response = self.session.get(
+                settings.player,
+                params={
+                    'q': username
+                }
+            )
+            return Player(response)
+        except HTTPError, e:
+            if e.code == 404:
+                raise UsernameNotFound(e)
+            else:
+                raise e
 
     def battle_royale_stats(self, username, platform):
         """Return object containing Battle Royale stats"""

@@ -36,3 +36,10 @@ class GameType:
     solo = '_p2'
     duo = '_p10'
     squad = '_p9'
+
+DEBUG = False
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
