@@ -11,10 +11,14 @@ class Player(object):
 class BattleRoyale(object):
     def __init__(self, response, platform):
         self.json = response
-        self.solo = BattleRoyaleStats(response=self.json, platform=platform, mode='_p2')
-        self.duo = BattleRoyaleStats(response=self.json, platform=platform, mode='_p10')
-        self.squad = BattleRoyaleStats(response=self.json, platform=platform, mode='_p9')
-        self.all = BattleRoyaleStats(response=self.json, platform=platform, mode='_p')
+        self.solo = BattleRoyaleStats(
+            response=self.json, platform=platform, mode='_p2')
+        self.duo = BattleRoyaleStats(
+            response=self.json, platform=platform, mode='_p10')
+        self.squad = BattleRoyaleStats(
+            response=self.json, platform=platform, mode='_p9')
+        self.all = BattleRoyaleStats(
+            response=self.json, platform=platform, mode='_p')
 
 
 class BattleRoyaleStats(object):
@@ -66,7 +70,8 @@ class Store(object):
         self.storefronts = self.storefront_list()
 
     def storefront_list(self):
-        return [StoreFront(response) for response in self.json.get('storefronts')]
+        return [StoreFront(response) for response in self.json.get(
+                                                            'storefronts')]
 
 
 class StoreFront(object):
@@ -76,7 +81,8 @@ class StoreFront(object):
         self.catalog_entries = self.catalog_entry_list()
 
     def catalog_entry_list(self):
-        return [CatalogEntry(response) for response in self.json.get('catalogEntries')]
+        return [CatalogEntry(response) for response in self.json.get(
+                                                            'catalogEntries')]
 
 
 class CatalogEntry(object):

@@ -12,18 +12,34 @@ def getJSON(url, headers={}, params={}):
         url = url + '&' + params
     elif len(params):
         url = url + '?' + params
-    request = urllib2.Request(
-        url, 
-        headers=headers)
-    response = urllib2.urlopen(request)
-    return json.load(response)
+    try:
+        request = urllib2.Request(
+            url,
+            headers=headers)
+        response = urllib2.urlopen(request)
+        return json.load(response)
+    except urllib2.HTTPError, e:
+        print url
+        print params
+        print headers
+        print e.read()
+        raise e
+
 
 def postJSON(url, headers={}, data={}):
     if data is None:
         data = {}
-    request = urllib2.Request(url, headers=headers, data=urlencode(data))
-    response = urllib2.urlopen(request)
-    return json.load(response)
+    try:
+        request = urllib2.Request(url, headers=headers, data=urlencode(data))
+        response = urllib2.urlopen(request)
+        return json.load(response)
+    except urllib2.HTTPError, e:
+        print url
+        print data
+        print headers
+        print e.read()
+        raise e
+
 
 def convert_iso_time(isotime):
     """Will convert an isotime (string) to datetime.datetime"""
